@@ -27,7 +27,7 @@ interface AdminSidebarProps {
   user: {
     name: string
     email: string
-    role: 'ADMIN' | 'EDITOR' | 'WRITER'
+    role: 'ADMIN' | 'EDITOR' | 'WRITER' | 'AUTHOR'
     profileImage?: string | null
   }
   settings: {
@@ -37,14 +37,14 @@ interface AdminSidebarProps {
 }
 
 const navigation = [
-  { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard, roles: ['ADMIN', 'EDITOR', 'WRITER'] },
-  { name: 'Posts', href: '/admin/posts', icon: FileText, roles: ['ADMIN', 'EDITOR', 'WRITER'] },
+  { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard, roles: ['ADMIN', 'EDITOR', 'WRITER', 'AUTHOR'] },
+  { name: 'Posts', href: '/admin/posts', icon: FileText, roles: ['ADMIN', 'EDITOR', 'WRITER', 'AUTHOR'] },
   { name: 'Categories', href: '/admin/categories', icon: Folder, roles: ['ADMIN', 'EDITOR'] },
   { name: 'Media', href: '/admin/images', icon: Image, roles: ['ADMIN'] },
   { name: 'Messages', href: '/admin/messages', icon: MessageSquare, roles: ['ADMIN'] },
   { name: 'Users', href: '/admin/users', icon: Users, roles: ['ADMIN'] },
   { name: 'Settings', href: '/admin/settings', icon: Settings, roles: ['ADMIN'] },
-  { name: 'Account', href: '/admin/account', icon: User, roles: ['ADMIN', 'EDITOR', 'WRITER'] },
+  { name: 'Account', href: '/admin/account', icon: User, roles: ['ADMIN', 'EDITOR', 'WRITER', 'AUTHOR'] },
 ]
 
 export default function AdminSidebar({ user, settings }: AdminSidebarProps) {
@@ -52,7 +52,7 @@ export default function AdminSidebar({ user, settings }: AdminSidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
-    // ⛔ DB-driven branding not ready → show skeleton
+  // ⛔ DB-driven branding not ready → show skeleton
   if (!settings?.site_name && !settings?.site_logo) {
     return <AdminSidebarSkeleton />
   }

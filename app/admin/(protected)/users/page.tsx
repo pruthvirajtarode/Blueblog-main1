@@ -119,6 +119,8 @@ export default function AdminUsersPage() {
       'bg-blue-100 text-blue-700 shadow-[0_6px_16px_rgba(59,130,246,0.35)]',
     WRITER:
       'bg-green-100 text-green-700 shadow-[0_6px_16px_rgba(34,197,94,0.35)]',
+    AUTHOR:
+      'bg-orange-100 text-orange-700 shadow-[0_6px_16px_rgba(249,115,22,0.35)]',
   }
 
   return (
@@ -154,77 +156,77 @@ export default function AdminUsersPage() {
 
       {/* ================= MOBILE LIST ================= */}
       <div className="md:hidden space-y-3 px-2">
-  {loading
-    ? Array.from({ length: 4 }).map((_, i) => (
-        <div
-          key={i}
-          className="rounded-xl bg-card p-3 elev-sm animate-pulse"
-        >
-          <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-muted" />
-            <div className="space-y-2 flex-1">
-              <div className="h-4 w-32 rounded bg-muted" />
-              <div className="h-3 w-40 rounded bg-muted" />
-            </div>
-          </div>
-        </div>
-      ))
-    : filteredUsers.map(user => (
-          <div
-            key={user.id}
-            className="rounded-xl bg-card p-3 elev-sm w-full max-w-full overflow-hidden"
-          >
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center overflow-hidden">
-                {user.profileImage ? (
-                  <img
-                    src={user.profileImage}
-                    alt={user.name}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <UserIcon className="h-5 w-5 text-slate-400" />
-                )}
-              </div>
-
-              <div className="min-w-0">
-                <p className="text-sm font-medium truncate">{user.name}</p>
-                <p className="text-xs text-slate-500 truncate">{user.email}</p>
+        {loading
+          ? Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              className="rounded-xl bg-card p-3 elev-sm animate-pulse"
+            >
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-full bg-muted" />
+                <div className="space-y-2 flex-1">
+                  <div className="h-4 w-32 rounded bg-muted" />
+                  <div className="h-3 w-40 rounded bg-muted" />
+                </div>
               </div>
             </div>
+          ))
+          : filteredUsers.map(user => (
+            <div
+              key={user.id}
+              className="rounded-xl bg-card p-3 elev-sm w-full max-w-full overflow-hidden"
+            >
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center overflow-hidden">
+                  {user.profileImage ? (
+                    <img
+                      src={user.profileImage}
+                      alt={user.name}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <UserIcon className="h-5 w-5 text-slate-400" />
+                  )}
+                </div>
 
-            <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
-              <span className={`rounded-full px-3 py-1 ${roleStyles[user.role]}`}>
-                {user.role}
-              </span>
-              <span className="text-slate-500">
-                Posts: {user._count.posts}
-              </span>
-              <span className="text-slate-500">
-                Joined: {new Date(user.createdAt).toLocaleDateString()}
-              </span>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium truncate">{user.name}</p>
+                  <p className="text-xs text-slate-500 truncate">{user.email}</p>
+                </div>
+              </div>
+
+              <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+                <span className={`rounded-full px-3 py-1 ${roleStyles[user.role]}`}>
+                  {user.role}
+                </span>
+                <span className="text-slate-500">
+                  Posts: {user._count.posts}
+                </span>
+                <span className="text-slate-500">
+                  Joined: {new Date(user.createdAt).toLocaleDateString()}
+                </span>
+              </div>
+
+              <div className="mt-3 flex gap-2">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleEdit(user)}
+                >
+                  <Edit className="h-4 w-4" />
+                </Button>
+
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-red-500 hover:bg-red-50"
+                  onClick={() => handleDelete(user.id)}
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
-
-            <div className="mt-3 flex gap-2">
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleEdit(user)}
-              >
-                <Edit className="h-4 w-4" />
-              </Button>
-
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-red-500 hover:bg-red-50"
-                onClick={() => handleDelete(user.id)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        ))}
+          ))}
       </div>
 
       {/* ================= DESKTOP TABLE ================= */}
@@ -241,78 +243,78 @@ export default function AdminUsersPage() {
           </thead>
 
           <tbody>
-  {loading
-    ? Array.from({ length: 6 }).map((_, i) => (
-        <tr key={i}>
-          <td colSpan={5} className="px-6 py-5">
-            <div className="h-6 rounded bg-muted animate-pulse" />
-          </td>
-        </tr>
-      ))
-    : filteredUsers.map(user => (
-              <tr
-                key={user.id}
-                className="ui-transition hover:bg-muted"
-              >
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-4">
-                    <div className="h-10 w-10 rounded-full overflow-hidden bg-muted flex items-center justify-center">
-                      {user.profileImage ? (
-                        <img
-                          src={user.profileImage}
-                          alt={user.name}
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <UserIcon className="h-5 w-5 text-slate-400" />
-                      )}
+            {loading
+              ? Array.from({ length: 6 }).map((_, i) => (
+                <tr key={i}>
+                  <td colSpan={5} className="px-6 py-5">
+                    <div className="h-6 rounded bg-muted animate-pulse" />
+                  </td>
+                </tr>
+              ))
+              : filteredUsers.map(user => (
+                <tr
+                  key={user.id}
+                  className="ui-transition hover:bg-muted"
+                >
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-4">
+                      <div className="h-10 w-10 rounded-full overflow-hidden bg-muted flex items-center justify-center">
+                        {user.profileImage ? (
+                          <img
+                            src={user.profileImage}
+                            alt={user.name}
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <UserIcon className="h-5 w-5 text-slate-400" />
+                        )}
+                      </div>
+
+                      <div>
+                        <p className="text-sm font-medium">{user.name}</p>
+                        <p className="text-xs text-slate-500">{user.email}</p>
+                      </div>
                     </div>
+                  </td>
 
-                    <div>
-                      <p className="text-sm font-medium">{user.name}</p>
-                      <p className="text-xs text-slate-500">{user.email}</p>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${roleStyles[user.role]}`}
+                    >
+                      {user.role}
+                    </span>
+                  </td>
+
+                  <td className="px-6 py-4 text-sm text-slate-500">
+                    {user._count.posts}
+                  </td>
+
+                  <td className="px-6 py-4 text-sm text-slate-500">
+                    {new Date(user.createdAt).toLocaleDateString()}
+                  </td>
+
+                  <td className="px-6 py-4">
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleEdit(user)}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-red-500 hover:bg-red-50"
+                        onClick={() => handleDelete(user.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
-                  </div>
-                </td>
-
-                <td className="px-6 py-4">
-                  <span
-                    className={`inline-flex rounded-full px-3 py-1 text-xs font-medium ${roleStyles[user.role]}`}
-                  >
-                    {user.role}
-                  </span>
-                </td>
-
-                <td className="px-6 py-4 text-sm text-slate-500">
-                  {user._count.posts}
-                </td>
-
-                <td className="px-6 py-4 text-sm text-slate-500">
-                  {new Date(user.createdAt).toLocaleDateString()}
-                </td>
-
-                <td className="px-6 py-4">
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => handleEdit(user)}
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-red-500 hover:bg-red-50"
-                      onClick={() => handleDelete(user.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
@@ -349,6 +351,7 @@ export default function AdminUsersPage() {
             onChange={e => setFormData({ ...formData, role: e.target.value })}
             className="w-full rounded-xl bg-muted px-3 py-2 text-sm ui-transition focus:outline-none"
           >
+            <option value="AUTHOR">Author</option>
             <option value="WRITER">Writer</option>
             <option value="EDITOR">Editor</option>
           </select>

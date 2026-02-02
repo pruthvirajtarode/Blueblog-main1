@@ -17,6 +17,8 @@ export default function TeamMember({ member }: TeamMemberProps) {
       'bg-blue-100 text-blue-700 shadow-[0_6px_16px_rgba(59,130,246,0.35)]',
     WRITER:
       'bg-green-100 text-green-700 shadow-[0_6px_16px_rgba(34,197,94,0.35)]',
+    AUTHOR:
+      'bg-orange-100 text-orange-700 shadow-[0_6px_16px_rgba(249,115,22,0.35)]',
   }
 
   return (
