@@ -12,6 +12,7 @@ enum UserRole {
   ADMIN
   EDITOR
   WRITER
+  AUTHOR
 }
 
 enum PostStatus {

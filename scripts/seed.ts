@@ -41,6 +41,34 @@ async function main() {
   console.log(`✅ Admin created: ${admin.email}`)
 
   /* ===============================
+     WRITER & AUTHOR (CREATE ONCE)
+     =============================== */
+
+  const writerPassword = await hash('123456', 12)
+  const writer = await prisma.user.create({
+    data: {
+      name: 'Blog Writer',
+      email: 'writer@blog.com',
+      passwordHash: writerPassword,
+      role: UserRole.WRITER,
+      bio: 'Professional writer for BlueBlog',
+    },
+  })
+  console.log(`✅ Writer created: ${writer.email}`)
+
+  const authorPassword = await hash('123456', 12)
+  const author = await prisma.user.create({
+    data: {
+      name: 'Blog Author',
+      email: 'author@blog.com',
+      passwordHash: authorPassword,
+      role: UserRole.AUTHOR,
+      bio: 'Passionate author for BlueBlog',
+    },
+  })
+  console.log(`✅ Author created: ${author.email}`)
+
+  /* ===============================
      CATEGORIES (UPSERT)
      =============================== */
 
