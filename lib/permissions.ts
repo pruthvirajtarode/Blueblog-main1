@@ -1,14 +1,14 @@
 import { UserRole } from '@prisma/client'
 
 export const permissions = {
-  canViewDashboard: (role: UserRole) => ['ADMIN', 'EDITOR', 'WRITER'].includes(role),
+  canViewDashboard: (role: UserRole) => ['ADMIN', 'EDITOR', 'WRITER', 'AUTHOR'].includes(role),
   canManageUsers: (role: UserRole) => role === 'ADMIN',
   canManageSettings: (role: UserRole) => role === 'ADMIN',
-  canManagePosts: (role: UserRole) => ['ADMIN', 'EDITOR', 'WRITER'].includes(role),
+  canManagePosts: (role: UserRole) => ['ADMIN', 'EDITOR', 'WRITER', 'AUTHOR'].includes(role),
   canEditAllPosts: (role: UserRole) => ['ADMIN', 'EDITOR'].includes(role),
   canPublishPosts: (role: UserRole) => ['ADMIN', 'EDITOR'].includes(role),
   canManageCategories: (role: UserRole) => ['ADMIN', 'EDITOR'].includes(role),
-  canManageImages: (role: UserRole) => ['ADMIN', 'EDITOR', 'WRITER'].includes(role),
+  canManageImages: (role: UserRole) => ['ADMIN', 'EDITOR', 'WRITER', 'AUTHOR'].includes(role),
   canViewContactMessages: (role: UserRole) => ['ADMIN', 'EDITOR'].includes(role),
 }
 
@@ -20,13 +20,13 @@ export async function authorizeUser(userId: string, postId: string, userRole: Us
   if (userRole === 'ADMIN' || userRole === 'EDITOR') {
     return true
   }
-  
-  // For writers, check if they own the post
+
+  // For writers and authors, check if they own the post
   const { prisma } = await import('./prisma')
   const post = await prisma.post.findUnique({
     where: { id: postId },
     select: { authorId: true },
   })
-  
+
   return post?.authorId === userId
 }
