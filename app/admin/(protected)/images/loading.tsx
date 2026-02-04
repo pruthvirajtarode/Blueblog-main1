@@ -1,20 +1,22 @@
+import { Skeleton } from "@/components/ui/Skeleton"
+
 export default function Loading() {
   return (
-    <div className="space-y-8 animate-pulse">
+    <div className="space-y-8">
 
       {/* ================= HEADER ================= */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="space-y-2">
-          <div className="h-6 w-40 rounded bg-muted" />
-          <div className="h-4 w-56 rounded bg-muted" />
+        <div className="space-y-3">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-4 w-64" />
         </div>
 
-        <div className="h-10 w-40 rounded-lg bg-muted" />
+        <Skeleton className="h-11 w-40 rounded-xl" />
       </div>
 
       {/* ================= SEARCH ================= */}
-      <div className="rounded-xl bg-card p-4">
-        <div className="h-10 w-full rounded-lg bg-muted" />
+      <div className="rounded-2xl bg-card p-6 elev-sm">
+        <Skeleton className="h-11 w-full rounded-xl" />
       </div>
 
       {/* ================= GRID ================= */}
@@ -22,22 +24,22 @@ export default function Loading() {
         {Array.from({ length: 8 }).map((_, i) => (
           <div
             key={i}
-            className="rounded-xl bg-card overflow-hidden"
+            className="rounded-2xl bg-card overflow-hidden elev-sm"
           >
             {/* image */}
-            <div className="aspect-square bg-muted" />
+            <Skeleton className="aspect-square w-full rounded-none" />
 
             {/* meta */}
-            <div className="p-4 space-y-2">
-              <div className="h-4 w-3/4 rounded bg-muted" />
-              <div className="h-3 w-1/2 rounded bg-muted" />
+            <div className="p-5 space-y-3">
+              <Skeleton className="h-5 w-3/4" />
+              <Skeleton className="h-3 w-1/2" />
 
-              <div className="flex items-center justify-between pt-3">
-                <div className="h-3 w-16 rounded bg-muted" />
+              <div className="flex items-center justify-between pt-4">
+                <Skeleton className="h-3 w-16" />
                 <div className="flex gap-2">
-                  <div className="h-8 w-8 rounded bg-muted" />
-                  <div className="h-8 w-8 rounded bg-muted" />
-                  <div className="h-8 w-8 rounded bg-muted" />
+                  <Skeleton className="h-9 w-9 rounded-lg" />
+                  <Skeleton className="h-9 w-9 rounded-lg" />
+                  <Skeleton className="h-9 w-9 rounded-lg" />
                 </div>
               </div>
             </div>

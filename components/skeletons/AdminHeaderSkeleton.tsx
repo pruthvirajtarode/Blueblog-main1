@@ -1,17 +1,19 @@
+import { Skeleton } from "@/components/ui/Skeleton"
+
 export default function AdminHeaderSkeleton() {
   return (
-    <header className="hidden lg:flex h-16 items-center justify-between bg-card px-6 elev-sm">
-      <div className="flex items-center gap-3">
-        <div className="h-9 w-9 rounded bg-muted animate-pulse" />
-        <div className="h-5 w-32 rounded bg-muted animate-pulse" />
+    <header className="hidden lg:flex h-16 items-center justify-between bg-card px-8 elev-sm border-b border-border">
+      <div className="flex items-center gap-4">
+        <Skeleton className="h-10 w-10 rounded-lg" />
+        <Skeleton className="h-6 w-40" />
       </div>
 
-      <div className="flex items-center gap-3">
-        <div className="text-right space-y-1">
-          <div className="h-4 w-24 rounded bg-muted animate-pulse" />
-          <div className="h-3 w-16 rounded bg-muted animate-pulse" />
+      <div className="flex items-center gap-4">
+        <div className="text-right space-y-2">
+          <Skeleton className="h-4 w-28" />
+          <Skeleton className="h-3 w-16 ml-auto" />
         </div>
-        <div className="h-9 w-9 rounded-full bg-muted animate-pulse" />
+        <Skeleton className="h-10 w-10 rounded-full" />
       </div>
     </header>
   )
