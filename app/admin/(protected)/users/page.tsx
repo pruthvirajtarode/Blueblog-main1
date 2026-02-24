@@ -1,11 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus, Search, Edit, Trash2, User as UserIcon } from 'lucide-react'
+import { Plus, Search, Edit, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Modal } from '@/components/ui/Modal'
 import toast from 'react-hot-toast'
+import { getAvatarUrl } from '@/lib/utils'
 
 interface UserData {
   id: string
@@ -178,15 +179,11 @@ export default function AdminUsersPage() {
             >
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center overflow-hidden">
-                  {user.profileImage ? (
-                    <img
-                      src={user.profileImage}
-                      alt={user.name}
-                      className="h-full w-full object-cover"
-                    />
-                  ) : (
-                    <UserIcon className="h-5 w-5 text-slate-400" />
-                  )}
+                  <img
+                    src={getAvatarUrl(user.name, user.profileImage)}
+                    alt={user.name}
+                    className="h-full w-full object-cover"
+                  />
                 </div>
 
                 <div className="min-w-0">
@@ -259,15 +256,11 @@ export default function AdminUsersPage() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
                       <div className="h-10 w-10 rounded-full overflow-hidden bg-muted flex items-center justify-center">
-                        {user.profileImage ? (
-                          <img
-                            src={user.profileImage}
-                            alt={user.name}
-                            className="h-full w-full object-cover"
-                          />
-                        ) : (
-                          <UserIcon className="h-5 w-5 text-slate-400" />
-                        )}
+                        <img
+                          src={getAvatarUrl(user.name, user.profileImage)}
+                          alt={user.name}
+                          className="h-full w-full object-cover"
+                        />
                       </div>
 
                       <div>

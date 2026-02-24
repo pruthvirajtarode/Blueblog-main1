@@ -42,15 +42,24 @@ export function generateExcerpt(content: any, maxLength: number = 160): string {
   if (typeof content === 'string') {
     return truncate(content, maxLength)
   }
-  
+
   if (Array.isArray(content)) {
     const text = content
       .filter((block: any) => block.type === 'paragraph' || block.type === 'heading')
       .map((block: any) => block.content?.map((item: any) => item.text).join(' ') || '')
       .join(' ')
-    
+
     return truncate(text, maxLength)
   }
-  
+
   return ''
+}
+
+export function getAvatarUrl(name: string, profileImage?: string | null) {
+  if (profileImage && profileImage.trim() !== '') {
+    return profileImage
+  }
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(
+    name
+  )}&background=random&color=fff`
 }

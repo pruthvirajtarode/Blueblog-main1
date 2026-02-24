@@ -110,293 +110,293 @@ export default function AdminSettingsPage() {
 
       <div className="grid gap-6 lg:grid-cols-2">
 
-  {/* ================= GENERAL SETTINGS ================= */}
-  <div className="bg-card elev-sm rounded-2xl p-6 space-y-6">
-    {loading ? (
-      <div className="space-y-6 animate-pulse">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-muted" />
-          <div className="space-y-2">
-            <div className="h-4 w-32 rounded bg-muted" />
-            <div className="h-3 w-48 rounded bg-muted" />
-          </div>
-        </div>
+        {/* ================= GENERAL SETTINGS ================= */}
+        <div className="bg-card elev-sm rounded-2xl p-6 space-y-6">
+          {loading ? (
+            <div className="space-y-6 animate-pulse">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-muted" />
+                <div className="space-y-2">
+                  <div className="h-4 w-32 rounded bg-muted" />
+                  <div className="h-3 w-48 rounded bg-muted" />
+                </div>
+              </div>
 
-        <div className="flex gap-6">
-          <div className="h-40 w-40 rounded-2xl bg-muted" />
-          <div className="space-y-3">
-            <div className="h-10 w-32 rounded bg-muted" />
-            <div className="h-3 w-40 rounded bg-muted" />
-          </div>
-        </div>
+              <div className="flex gap-6">
+                <div className="h-40 w-40 rounded-2xl bg-muted" />
+                <div className="space-y-3">
+                  <div className="h-10 w-32 rounded bg-muted" />
+                  <div className="h-3 w-40 rounded bg-muted" />
+                </div>
+              </div>
 
-        {Array.from({ length: 3 }).map((_, i) => (
-          <div key={i} className="space-y-2">
-            <div className="h-4 w-32 rounded bg-muted" />
-            <div className="h-10 w-full rounded bg-muted" />
-          </div>
-        ))}
-      </div>
-    ) : (
-      <>
-        <div className="flex items-center gap-3">
-          <div className="rounded-xl bg-indigo-100 p-2">
-            <SettingsIcon className="h-5 w-5 text-indigo-600" />
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold">General Settings</h2>
-            <p className="text-sm text-slate-500">
-              Basic site configuration
-            </p>
-          </div>
-        </div>
-
-        {/* LOGO */}
-        <div className="space-y-2">
-          <label className="text-sm font-medium">Site Logo</label>
-
-          <div className="flex flex-col sm:flex-row gap-6 items-start">
-            <div className="h-40 w-40 rounded-2xl bg-muted elev-sm flex items-center justify-center overflow-hidden">
-              <img
-                src={settings.site_logo || '/logo-placeholder.png'}
-                alt="Site Logo"
-                className="h-full w-full object-contain"
-              />
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="space-y-2">
+                  <div className="h-4 w-32 rounded bg-muted" />
+                  <div className="h-10 w-full rounded bg-muted" />
+                </div>
+              ))}
             </div>
+          ) : (
+            <>
+              <div className="flex items-center gap-3">
+                <div className="rounded-xl bg-indigo-100 p-2">
+                  <SettingsIcon className="h-5 w-5 text-indigo-600" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold">General Settings</h2>
+                  <p className="text-sm text-slate-500">
+                    Basic site configuration
+                  </p>
+                </div>
+              </div>
 
-            <div className="space-y-2">
-              <label className="cursor-pointer inline-block">
-                <span className="inline-flex items-center rounded-xl bg-card px-4 py-2 text-sm font-medium elev-sm ui-transition hover:elev-lg hover:scale-[1.02]">
-                  Change Logo
-                </span>
-                <input
-                  type="file"
-                  hidden
-                  accept="image/*"
-                  onChange={e => {
-                    const file = e.target.files?.[0]
-                    if (file) uploadLogo(file)
-                  }}
+              {/* LOGO */}
+              <div className="space-y-2">
+                <label className="text-sm font-medium">Site Logo</label>
+
+                <div className="flex flex-col sm:flex-row gap-6 items-start">
+                  <div className="h-40 w-40 rounded-2xl bg-muted elev-sm flex items-center justify-center overflow-hidden">
+                    <img
+                      src={settings.site_logo || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23f1f5f9'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='14' fill='%2394a3b8'%3ENo Logo%3C/text%3E%3C/svg%3E"}
+                      alt="Site Logo"
+                      className="h-full w-full object-contain"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="cursor-pointer inline-block">
+                      <span className="inline-flex items-center rounded-xl bg-card px-4 py-2 text-sm font-medium elev-sm ui-transition hover:elev-lg hover:scale-[1.02]">
+                        Change Logo
+                      </span>
+                      <input
+                        type="file"
+                        hidden
+                        accept="image/*"
+                        onChange={e => {
+                          const file = e.target.files?.[0]
+                          if (file) uploadLogo(file)
+                        }}
+                      />
+                    </label>
+                    <p className="text-xs text-slate-500">
+                      Square image recommended
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* SITE NAME */}
+              <div className="space-y-1">
+                <label className="text-sm font-medium">Site Name</label>
+                <Input
+                  value={settings.site_name}
+                  onChange={e =>
+                    setSettings({ ...settings, site_name: e.target.value })
+                  }
                 />
-              </label>
-              <p className="text-xs text-slate-500">
-                Square image recommended
-              </p>
+              </div>
+
+              {/* DESCRIPTION */}
+              <div className="space-y-1">
+                <label className="text-sm font-medium">Site Description</label>
+                <textarea
+                  rows={3}
+                  value={settings.site_description}
+                  onChange={e =>
+                    setSettings({
+                      ...settings,
+                      site_description: e.target.value,
+                    })
+                  }
+                  className="w-full rounded-xl bg-card elev-sm px-3 py-2 text-sm ui-transition focus:outline-none focus:elev-lg"
+                />
+              </div>
+
+              {/* EMAIL */}
+              <div className="space-y-1">
+                <label className="text-sm font-medium">Contact Email</label>
+                <Input
+                  type="email"
+                  value={settings.contact_email}
+                  onChange={e =>
+                    setSettings({ ...settings, contact_email: e.target.value })
+                  }
+                />
+              </div>
+            </>
+          )}
+        </div>
+
+        {/* ================= SOCIAL LINKS ================= */}
+        <div className="bg-card elev-sm rounded-2xl p-6 space-y-6">
+          {loading ? (
+            <div className="space-y-4 animate-pulse">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-muted" />
+                <div className="space-y-2">
+                  <div className="h-4 w-32 rounded bg-muted" />
+                  <div className="h-3 w-40 rounded bg-muted" />
+                </div>
+              </div>
+
+              {Array.from({ length: 4 }).map((_, i) => (
+                <div key={i} className="space-y-2">
+                  <div className="h-4 w-28 rounded bg-muted" />
+                  <div className="h-10 w-full rounded bg-muted" />
+                </div>
+              ))}
             </div>
-          </div>
+          ) : (
+            <>
+              <div className="flex items-center gap-3">
+                <div className="rounded-xl bg-blue-100 p-2">
+                  <Globe className="h-5 w-5 text-blue-600" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold">Social Media</h2>
+                  <p className="text-sm text-slate-500">
+                    Public profile links
+                  </p>
+                </div>
+              </div>
+
+              {/* Twitter */}
+              <div className="space-y-1">
+                <label className="flex items-center gap-2 text-sm font-medium">
+                  <Twitter className="h-4 w-4 text-sky-500" />
+                  Twitter
+                </label>
+
+                <Input
+                  value={settings.social_links.twitter || ''}
+                  onChange={e =>
+                    setSettings({
+                      ...settings,
+                      social_links: {
+                        ...settings.social_links,
+                        twitter: e.target.value,
+                      },
+                    })
+                  }
+                  placeholder="username"
+                />
+              </div>
+
+
+              {/* Facebook */}
+              <div className="space-y-1">
+                <label className="flex items-center gap-2 text-sm font-medium">
+                  <Facebook className="h-4 w-4 text-blue-600" />
+                  Facebook
+                </label>
+
+                <Input
+                  value={settings.social_links.facebook || ''}
+                  onChange={e =>
+                    setSettings({
+                      ...settings,
+                      social_links: {
+                        ...settings.social_links,
+                        facebook: e.target.value,
+                      },
+                    })
+                  }
+                  placeholder="username"
+                />
+              </div>
+
+
+              {/* Instagram */}
+              <div className="space-y-1">
+                <label className="flex items-center gap-2 text-sm font-medium">
+                  <Instagram className="h-4 w-4 text-pink-500" />
+                  Instagram
+                </label>
+
+                <Input
+                  value={settings.social_links.instagram || ''}
+                  onChange={e =>
+                    setSettings({
+                      ...settings,
+                      social_links: {
+                        ...settings.social_links,
+                        instagram: e.target.value,
+                      },
+                    })
+                  }
+                  placeholder="username"
+                />
+              </div>
+
+
+              {/* GitHub */}
+              <div className="space-y-1">
+                <label className="flex items-center gap-2 text-sm font-medium">
+                  <Github className="h-4 w-4 text-slate-700" />
+                  GitHub
+                </label>
+
+                <Input
+                  value={settings.social_links.github || ''}
+                  onChange={e =>
+                    setSettings({
+                      ...settings,
+                      social_links: {
+                        ...settings.social_links,
+                        github: e.target.value,
+                      },
+                    })
+                  }
+                  placeholder="username"
+                />
+              </div>
+
+            </>
+          )}
         </div>
 
-        {/* SITE NAME */}
-        <div className="space-y-1">
-          <label className="text-sm font-medium">Site Name</label>
-          <Input
-            value={settings.site_name}
-            onChange={e =>
-              setSettings({ ...settings, site_name: e.target.value })
-            }
-          />
+        {/* ================= FOOTER ================= */}
+        <div className="bg-card elev-sm rounded-2xl p-6 space-y-6 lg:col-span-2">
+          {loading ? (
+            <div className="space-y-4 animate-pulse">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-muted" />
+                <div className="space-y-2">
+                  <div className="h-4 w-32 rounded bg-muted" />
+                  <div className="h-3 w-48 rounded bg-muted" />
+                </div>
+              </div>
+
+              <div className="h-32 w-full rounded bg-muted" />
+            </div>
+          ) : (
+            <>
+              <div className="flex items-center gap-3">
+                <div className="rounded-xl bg-slate-100 p-2">
+                  <LinkIcon className="h-5 w-5 text-slate-600" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-semibold">Footer</h2>
+                  <p className="text-sm text-slate-500">
+                    Footer text and branding
+                  </p>
+                </div>
+              </div>
+
+              <textarea
+                rows={4}
+                value={settings.footer_text}
+                onChange={e =>
+                  setSettings({ ...settings, footer_text: e.target.value })
+                }
+                className="w-full rounded-xl bg-card elev-sm px-3 py-2 text-sm ui-transition focus:outline-none focus:elev-lg"
+              />
+            </>
+          )}
         </div>
 
-        {/* DESCRIPTION */}
-        <div className="space-y-1">
-          <label className="text-sm font-medium">Site Description</label>
-          <textarea
-            rows={3}
-            value={settings.site_description}
-            onChange={e =>
-              setSettings({
-                ...settings,
-                site_description: e.target.value,
-              })
-            }
-            className="w-full rounded-xl bg-card elev-sm px-3 py-2 text-sm ui-transition focus:outline-none focus:elev-lg"
-          />
-        </div>
-
-        {/* EMAIL */}
-        <div className="space-y-1">
-          <label className="text-sm font-medium">Contact Email</label>
-          <Input
-            type="email"
-            value={settings.contact_email}
-            onChange={e =>
-              setSettings({ ...settings, contact_email: e.target.value })
-            }
-          />
-        </div>
-      </>
-    )}
-  </div>
-
-  {/* ================= SOCIAL LINKS ================= */}
-  <div className="bg-card elev-sm rounded-2xl p-6 space-y-6">
-    {loading ? (
-      <div className="space-y-4 animate-pulse">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-muted" />
-          <div className="space-y-2">
-            <div className="h-4 w-32 rounded bg-muted" />
-            <div className="h-3 w-40 rounded bg-muted" />
-          </div>
-        </div>
-
-        {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="space-y-2">
-            <div className="h-4 w-28 rounded bg-muted" />
-            <div className="h-10 w-full rounded bg-muted" />
-          </div>
-        ))}
       </div>
-    ) : (
-      <>
-        <div className="flex items-center gap-3">
-          <div className="rounded-xl bg-blue-100 p-2">
-            <Globe className="h-5 w-5 text-blue-600" />
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold">Social Media</h2>
-            <p className="text-sm text-slate-500">
-              Public profile links
-            </p>
-          </div>
-        </div>
-
-        {/* Twitter */}
-        <div className="space-y-1">
-  <label className="flex items-center gap-2 text-sm font-medium">
-    <Twitter className="h-4 w-4 text-sky-500" />
-    Twitter
-  </label>
-
-  <Input
-    value={settings.social_links.twitter || ''}
-    onChange={e =>
-      setSettings({
-        ...settings,
-        social_links: {
-          ...settings.social_links,
-          twitter: e.target.value,
-        },
-      })
-    }
-    placeholder="username"
-  />
-</div>
-
-
-        {/* Facebook */}
-        <div className="space-y-1">
-  <label className="flex items-center gap-2 text-sm font-medium">
-    <Facebook className="h-4 w-4 text-blue-600" />
-    Facebook
-  </label>
-
-  <Input
-    value={settings.social_links.facebook || ''}
-    onChange={e =>
-      setSettings({
-        ...settings,
-        social_links: {
-          ...settings.social_links,
-          facebook: e.target.value,
-        },
-      })
-    }
-    placeholder="username"
-  />
-</div>
-
-
-        {/* Instagram */}
-        <div className="space-y-1">
-  <label className="flex items-center gap-2 text-sm font-medium">
-    <Instagram className="h-4 w-4 text-pink-500" />
-    Instagram
-  </label>
-
-  <Input
-    value={settings.social_links.instagram || ''}
-    onChange={e =>
-      setSettings({
-        ...settings,
-        social_links: {
-          ...settings.social_links,
-          instagram: e.target.value,
-        },
-      })
-    }
-    placeholder="username"
-  />
-</div>
-
-
-        {/* GitHub */}
-        <div className="space-y-1">
-  <label className="flex items-center gap-2 text-sm font-medium">
-    <Github className="h-4 w-4 text-slate-700" />
-    GitHub
-  </label>
-
-  <Input
-    value={settings.social_links.github || ''}
-    onChange={e =>
-      setSettings({
-        ...settings,
-        social_links: {
-          ...settings.social_links,
-          github: e.target.value,
-        },
-      })
-    }
-    placeholder="username"
-  />
-</div>
-
-      </>
-    )}
-  </div>
-
-  {/* ================= FOOTER ================= */}
-  <div className="bg-card elev-sm rounded-2xl p-6 space-y-6 lg:col-span-2">
-    {loading ? (
-      <div className="space-y-4 animate-pulse">
-        <div className="flex items-center gap-3">
-          <div className="h-10 w-10 rounded-xl bg-muted" />
-          <div className="space-y-2">
-            <div className="h-4 w-32 rounded bg-muted" />
-            <div className="h-3 w-48 rounded bg-muted" />
-          </div>
-        </div>
-
-        <div className="h-32 w-full rounded bg-muted" />
-      </div>
-    ) : (
-      <>
-        <div className="flex items-center gap-3">
-          <div className="rounded-xl bg-slate-100 p-2">
-            <LinkIcon className="h-5 w-5 text-slate-600" />
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold">Footer</h2>
-            <p className="text-sm text-slate-500">
-              Footer text and branding
-            </p>
-          </div>
-        </div>
-
-        <textarea
-          rows={4}
-          value={settings.footer_text}
-          onChange={e =>
-            setSettings({ ...settings, footer_text: e.target.value })
-          }
-          className="w-full rounded-xl bg-card elev-sm px-3 py-2 text-sm ui-transition focus:outline-none focus:elev-lg"
-        />
-      </>
-    )}
-  </div>
-
-</div>
 
       {/* SAVE */}
       <div className="flex justify-end">

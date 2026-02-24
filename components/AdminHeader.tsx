@@ -1,4 +1,5 @@
 import AdminHeaderSkeleton from '@/components/skeletons/AdminHeaderSkeleton'
+import { getAvatarUrl } from '@/lib/utils'
 
 interface AdminHeaderProps {
   user: {
@@ -16,10 +17,7 @@ export default function AdminHeader({ user, siteName, siteLogo }: AdminHeaderPro
     return <AdminHeaderSkeleton />
   }
 
-  const avatar =
-    user.profileImage && user.profileImage.trim() !== ''
-      ? user.profileImage
-      : '/avatars/default.png'
+  const avatar = getAvatarUrl(user.name, user.profileImage)
 
   return (
     <header

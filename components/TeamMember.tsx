@@ -1,6 +1,5 @@
-import { User } from 'lucide-react'
 import { User as UserType } from '@prisma/client'
-import { formatDate } from '@/lib/utils'
+import { formatDate, getAvatarUrl } from '@/lib/utils'
 
 interface TeamMemberProps {
   member: Pick<
@@ -49,14 +48,11 @@ export default function TeamMember({ member }: TeamMemberProps) {
           "
         >
           <div className="h-full w-full rounded-full bg-card flex items-center justify-center overflow-hidden">
-            {member.profileImage ? (
-              <div
-                className="h-full w-full bg-cover bg-center"
-                style={{ backgroundImage: `url(${member.profileImage})` }}
-              />
-            ) : (
-              <User className="h-12 w-12 text-slate-400" />
-            )}
+            <img
+              src={getAvatarUrl(member.name, member.profileImage)}
+              alt={member.name}
+              className="h-full w-full object-cover"
+            />
           </div>
         </div>
       </div>

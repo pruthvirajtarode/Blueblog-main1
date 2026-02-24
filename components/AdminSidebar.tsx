@@ -21,7 +21,7 @@ import {
   X,
 } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
-import { cn } from '@/lib/utils'
+import { cn, getAvatarUrl } from '@/lib/utils'
 
 interface AdminSidebarProps {
   user: {
@@ -57,10 +57,7 @@ export default function AdminSidebar({ user, settings }: AdminSidebarProps) {
     return <AdminSidebarSkeleton />
   }
 
-  const avatar =
-    user.profileImage && user.profileImage.trim() !== ''
-      ? user.profileImage
-      : '/avatars/default.png'
+  const avatar = getAvatarUrl(user.name, user.profileImage)
 
   const filteredNavigation = navigation.filter(item =>
     item.roles.includes(user.role)
