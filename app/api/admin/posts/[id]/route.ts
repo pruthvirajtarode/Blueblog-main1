@@ -64,16 +64,16 @@ export async function PUT(
     const { id } = await params
     const user = await requireAuth()
 
-const body = await req.json()
-const data = postSchema.parse(body)
+    const body = await req.json()
+    const data = postSchema.parse(body)
 
-/** 🔒 WRITER CANNOT PUBLISH */
-if (user.role === 'WRITER' && data.status === 'PUBLISHED') {
-  return NextResponse.json(
-    { message: 'You are not authorized to publish posts. Save as draft only.' },
-    { status: 403 }
-  )
-}
+    /** 🔒 WRITER CANNOT PUBLISH */
+    if (user.role === 'WRITER' && data.status === 'PUBLISHED') {
+      return NextResponse.json(
+        { message: 'You are not authorized to publish posts. Save as draft only.' },
+        { status: 403 }
+      )
+    }
 
 
     const existing = await prisma.post.findFirst({
@@ -91,45 +91,40 @@ if (user.role === 'WRITER' && data.status === 'PUBLISHED') {
     }
 
     const post = await prisma.post.update({
-  where: { id },
-  data: {
-    title: data.title,
-    slug: data.slug,
-    content: data.content,
-    status: data.status,
-
-    ...(data.excerpt !== undefined && { excerpt: data.excerpt }),
-    ...(data.bannerImageId !== undefined && {
-      bannerImageId: data.bannerImageId,
-    }),
-    ...(data.seoTitle !== undefined && { seoTitle: data.seoTitle }),
-    ...(data.seoDescription !== undefined && {
-      seoDescription: data.seoDescription,
-    }),
-    ...(data.canonicalUrl !== undefined && {
-      canonicalUrl: data.canonicalUrl,
-    }),
-    ...(data.publishedAt !== undefined && {
-      publishedAt: data.publishedAt,
-    }),
-
-    categories: {
-      set: [],
-      connect: data.categoryIds?.map(cid => ({ id: cid })) ?? [],
-    },
-  },
-  include: {
-    categories: true,
-    bannerImage: true,
-  },
-})
-
+      where: { id },
+      data: {
+        title: data.title,
+        slug: data.slug,
+        content: data.content,
+        status: data.status,
+        excerpt: data.excerpt || null,
+        bannerImageId: data.bannerImageId || null,
+        seoTitle: data.seoTitle || null,
+        seoDescription: data.seoDescription || null,
+        canonicalUrl: data.canonicalUrl || null,
+        publishedAt: data.status === 'PUBLISHED' ? (data.publishedAt || new Date()) : null,
+        categories: {
+          set: [],
+          connect: data.categoryIds?.map(cid => ({ id: cid })) ?? [],
+        },
+      },
+      include: {
+        categories: true,
+        bannerImage: true,
+      },
+    })
 
     return NextResponse.json({ post })
-  } catch (e) {
-    console.error(e)
+  } catch (error: any) {
+    console.error('Update post error:', error)
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { message: 'Validation error', issues: error.issues },
+        { status: 400 }
+      )
+    }
     return NextResponse.json(
-      { message: 'Failed to update post' },
+      { message: error.message || 'Failed to update post' },
       { status: 500 }
     )
   }

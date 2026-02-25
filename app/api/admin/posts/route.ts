@@ -21,7 +21,7 @@ const postSchema = z.object({
 export async function GET(request: NextRequest) {
   try {
     const user = await requireAuth()
-    
+
     const { searchParams } = new URL(request.url)
     const page = parseInt(searchParams.get('page') || '1')
     const limit = parseInt(searchParams.get('limit') || '20')
@@ -31,11 +31,11 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit
 
     const where: any = {}
-    
+
     if (status) {
       where.status = status
     }
-    
+
     if (category) {
       where.categories = {
         some: {
@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
         },
       }
     }
-    
+
     if (search) {
       where.OR = [
         { title: { contains: search, mode: 'insensitive' } },
@@ -100,7 +100,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const user = await requireAuth()
-    
+
     if (!['ADMIN', 'EDITOR', 'WRITER'].includes(user.role)) {
       return NextResponse.json(
         { message: 'Unauthorized' },
@@ -109,15 +109,15 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-const data = postSchema.parse(body)
+    const data = postSchema.parse(body)
 
-/** 🔒 WRITER CANNOT PUBLISH */
-if (user.role === 'WRITER' && data.status === 'PUBLISHED') {
-  return NextResponse.json(
-    { message: 'Writers can only create drafts.' },
-    { status: 403 }
-  )
-}
+    /** 🔒 WRITER CANNOT PUBLISH */
+    if (user.role === 'WRITER' && data.status === 'PUBLISHED') {
+      return NextResponse.json(
+        { message: 'Writers can only create drafts.' },
+        { status: 403 }
+      )
+    }
 
 
     // Check if slug already exists
@@ -134,57 +134,45 @@ if (user.role === 'WRITER' && data.status === 'PUBLISHED') {
 
     // Create post
     const post = await prisma.post.create({
-  data: {
-    title: data.title,
-    slug: data.slug,
-    content: data.content,
-    authorId: user.id,
-    status: data.status,
-
-    ...(data.excerpt !== undefined && { excerpt: data.excerpt }),
-    ...(data.bannerImageId !== undefined && {
-      bannerImageId: data.bannerImageId,
-    }),
-    ...(data.seoTitle !== undefined && { seoTitle: data.seoTitle }),
-    ...(data.seoDescription !== undefined && {
-      seoDescription: data.seoDescription,
-    }),
-    ...(data.canonicalUrl !== undefined && {
-      canonicalUrl: data.canonicalUrl,
-    }),
-    ...(data.publishedAt !== undefined && {
-      publishedAt: data.publishedAt,
-    }),
-
-    categories: {
-      connect: data.categoryIds?.map(id => ({ id })) ?? [],
-    },
-  },
-  include: {
-    author: true,
-    bannerImage: true,
-    categories: true,
-  },
-})
-
+      data: {
+        title: data.title,
+        slug: data.slug,
+        content: data.content,
+        authorId: user.id,
+        status: data.status,
+        excerpt: data.excerpt || null,
+        bannerImageId: data.bannerImageId || null,
+        seoTitle: data.seoTitle || null,
+        seoDescription: data.seoDescription || null,
+        canonicalUrl: data.canonicalUrl || null,
+        publishedAt: data.status === 'PUBLISHED' ? (data.publishedAt || new Date()) : null,
+        categories: {
+          connect: data.categoryIds?.map(id => ({ id })) ?? [],
+        },
+      },
+      include: {
+        author: true,
+        bannerImage: true,
+        categories: true,
+      },
+    })
 
     return NextResponse.json({
       message: 'Post created successfully',
       post,
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Create post error:', error)
 
     if (error instanceof z.ZodError) {
-  return NextResponse.json(
-    { message: 'Validation error', issues: error.issues },
-    { status: 400 }
-  )
-}
-
+      return NextResponse.json(
+        { message: 'Validation error', issues: error.issues },
+        { status: 400 }
+      )
+    }
 
     return NextResponse.json(
-      { message: 'Failed to create post' },
+      { message: error.message || 'Failed to create post' },
       { status: 500 }
     )
   }
