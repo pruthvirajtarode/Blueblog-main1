@@ -24,7 +24,8 @@ export async function uploadImage(
         transformation: [{ quality: 'auto', fetch_format: 'auto' }],
       },
       (error, result) => {
-        if (error || !result) return reject(error)
+        if (error) return reject(error)
+        if (!result) return reject(new Error('Cloudinary upload failed: No result returned'))
 
         resolve({
           url: result.secure_url,

@@ -14,7 +14,7 @@ import { requireAuth } from '@/lib/auth'
 export async function POST(request: NextRequest) {
   try {
     const user = await requireAuth()
-    
+
     // Check if user has permission to upload images
     if (!['ADMIN', 'EDITOR', 'WRITER'].includes(user.role)) {
       return NextResponse.json(
@@ -61,13 +61,13 @@ export async function POST(request: NextRequest) {
     // Store image metadata in database
     const image = await prisma.image.create({
       data: {
-  url: uploadResult.url,
-  ...(altText && { altText }),
-  ...(title && { title }),
-  ...(caption && { caption }),
-  width: uploadResult.width,
-  height: uploadResult.height,
-},
+        url: uploadResult.url,
+        ...(altText && { altText }),
+        ...(title && { title }),
+        ...(caption && { caption }),
+        width: uploadResult.width,
+        height: uploadResult.height,
+      },
 
     })
 
@@ -83,8 +83,8 @@ export async function POST(request: NextRequest) {
         height: image.height,
       },
     })
-  } catch (error) {
-    console.error('Upload error:', error)
+  } catch (error: any) {
+    console.error('Upload error detail:', error)
 
     if (error instanceof z.ZodError) {
       return NextResponse.json(
@@ -93,8 +93,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    const errorMessage = error?.message || 'Upload failed. Please try again.'
+
     return NextResponse.json(
-      { message: 'Upload failed. Please try again.' },
+      { message: errorMessage },
       { status: 500 }
     )
   }
@@ -103,7 +105,7 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const user = await requireAuth()
-    
+
     if (!['ADMIN', 'EDITOR', 'WRITER'].includes(user.role)) {
       return NextResponse.json(
         { message: 'Unauthorized' },
@@ -118,29 +120,29 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit
 
     const where: Prisma.ImageWhereInput = search
-  ? {
-      OR: [
-        {
-          altText: {
-            contains: search,
-            mode: Prisma.QueryMode.insensitive,
+      ? {
+        OR: [
+          {
+            altText: {
+              contains: search,
+              mode: Prisma.QueryMode.insensitive,
+            },
           },
-        },
-        {
-          title: {
-            contains: search,
-            mode: Prisma.QueryMode.insensitive,
+          {
+            title: {
+              contains: search,
+              mode: Prisma.QueryMode.insensitive,
+            },
           },
-        },
-        {
-          caption: {
-            contains: search,
-            mode: Prisma.QueryMode.insensitive,
+          {
+            caption: {
+              contains: search,
+              mode: Prisma.QueryMode.insensitive,
+            },
           },
-        },
-      ],
-    }
-  : {}
+        ],
+      }
+      : {}
 
 
     const [images, total] = await Promise.all([
