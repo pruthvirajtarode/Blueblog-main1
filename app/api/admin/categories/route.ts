@@ -11,33 +11,39 @@ const schema = z.object({
 
 /* -------- CREATE -------- */
 export async function POST(req: NextRequest) {
-  await requireAuth()
-  const body = schema.parse(await req.json())
+  try {
+    await requireAuth()
+    const body = schema.parse(await req.json())
 
-  const exists = await prisma.category.findUnique({
-    where: { slug: body.slug },
-  })
+    const exists = await prisma.category.findUnique({
+      where: { slug: body.slug },
+    })
 
-  if (exists) {
+    if (exists) {
+      return NextResponse.json(
+        { message: 'Slug already exists' },
+        { status: 400 }
+      )
+    }
+
+    const category = await prisma.category.create({
+      data: {
+        name: body.name,
+        slug: body.slug,
+        imageId: body.imageId || null,
+      },
+      include: {
+        image: true,
+        _count: { select: { posts: true } },
+      },
+    })
+
+    return NextResponse.json({ message: 'Category created', category })
+  } catch (error: any) {
+    console.error('Create category error:', error)
     return NextResponse.json(
-      { message: 'Slug already exists' },
-      { status: 400 }
+      { message: error.message || 'Failed to create category' },
+      { status: 500 }
     )
   }
-
-  const category = await prisma.category.create({
-    data: {
-      name: body.name,
-      slug: body.slug,
-      ...(body.imageId !== undefined && {
-        imageId: body.imageId,
-      }),
-    },
-    include: {
-      image: true,
-      _count: { select: { posts: true } },
-    },
-  })
-
-  return NextResponse.json({ message: 'Category created', category })
 }

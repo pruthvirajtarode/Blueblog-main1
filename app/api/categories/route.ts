@@ -51,11 +51,10 @@ export async function POST(request: NextRequest) {
 
     const category = await prisma.category.create({
       data: {
-  name: data.name,
-  slug: data.slug,
-  ...(data.imageId && { imageId: data.imageId }),
-},
-
+        name: data.name,
+        slug: data.slug,
+        imageId: data.imageId || null,
+      },
       include: {
         image: true,
       },
@@ -65,7 +64,7 @@ export async function POST(request: NextRequest) {
       message: 'Category created successfully',
       category,
     })
-  } catch (error) {
+  } catch (error: any) {
     console.error('Create category error:', error)
 
     if (error instanceof z.ZodError) {
@@ -76,7 +75,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { message: 'Failed to create category' },
+      { message: error.message || 'Failed to create category' },
       { status: 500 }
     )
   }
